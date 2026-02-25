@@ -1,8 +1,9 @@
 import crypto from 'crypto';
 
-// Use a static ENCRYPTION_KEY or generate/store one securely in real-world
-// For this local app, we check env or use a fallback (32 bytes)
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || crypto.randomBytes(32).toString('hex');
+// Use a static ENCRYPTION_KEY or fallback to a hardcoded string if none provided.
+// IMPORTANT: Using a fixed fallback string instead of `randomBytes` ensures that
+// serverless cold starts on Vercel do not generate a novel key, which would break decryption.
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'default_fallback_encryption_key_for_vercel_only__do_not_use_in_prod';
 const ALGORITHM = 'aes-256-gcm';
 
 export function encrypt(text: string): string {
